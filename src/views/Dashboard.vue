@@ -8,11 +8,24 @@
         Take a note
       </router-link>
     </div>
+
+    <div>
+      <input type="text" v-model="keyword" placeholder="Search keyword.."
+     
+
+      />
+        <label>
+
+        </label>
+       
+
+    </div>
     <router-link
       class="block border-b py-4"
       :to="{ name: 'Note', params: { id: note.id } }"
       v-for="note in notes"
       :key="note.id"
+      
     >
       <div>
         <header class="mb-2">
@@ -25,6 +38,11 @@
         <p class="text-sm text-gray-400 mt-2 text-right">
           {{ new Date(note.createdAt).toLocaleDateString() }}
         </p>
+        <button @click.prevent="deleteIt(note.id)"
+          class="font-medium text-red-600 px-4 py-1 border-2 border-red-600 rounded-md text-base hover:bg-indigo-50  appearance-none focus:outline-none ml-8"
+          >
+          Delete
+        </button>
       </div></router-link
     >
     <div class="flex mt-8 justify-end">
@@ -35,7 +53,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import Vue from "vue";
 import axios from "axios";
 
@@ -44,17 +62,43 @@ export default Vue.extend({
   data() {
     return {
       notes: [],
+      keyword: ""
     };
   },
-  async mounted() {
-    const response = await axios.get("http://localhost:3000/notes");
-    this.notes = response.data;
+  computed: {
+    searchKeyword() {
+      return this.notes.filter(note =>
+      {return note.content.includes(this.keyword)
+      })
+    }
+  },
+
+   mounted() {
+    this.getNotes()
   },
   methods: {
+
+  
+
+    async deleteIt(id) {
+
+              const response = await axios.delete(`http://localhost:3000/notes/${id}`);
+              console.log(response);
+              this.getNotes();
+              
+          },
+    
     logout() {
       this.$store.commit("CLEAR");
       this.$router.push({ name: "Login" });
     },
+
+    async getNotes() {
+       
+     const response = await axios.get("http://localhost:3000/notes");
+    this.notes = response.data;
   },
+    
+  }, 
 });
 </script>

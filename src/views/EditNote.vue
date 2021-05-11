@@ -29,7 +29,7 @@
           class="font-medium text-indigo-500 px-8 py-1 border-2 border-indigo-400 rounded-md text-base hover:bg-indigo-50  appearance-none focus:outline-none"
           type="submit"
         >
-          Create
+          Update
         </button>
       </div>
       <p v-if="submitError" class="mt-1 text-xs text-red-600">
@@ -43,6 +43,7 @@
 import axios from "axios";
 
 export default {
+    name: "EditNote",
   data() {
     return {
       title: "",
@@ -51,7 +52,12 @@ export default {
       submitError: "",
     };
   },
-   
+  async mounted() {
+    const id = this.$route.params.id;
+    const response = await axios.get("http://localhost:3000/notes/" + id);
+    this.title = response.data.title;
+    this.content = response.data.content;
+  },
   computed: {
     titleHint() {
       if (this.titleTouched == false) return "";
@@ -68,20 +74,18 @@ export default {
     clearErrors() {
       this.submitError = "";
     },
-   
     async submit() {
       this.clearErrors();
 
       if (!this.validate()) return;
       try {
         const now = new Date();
-        const response = await axios.post("http://localhost:3000/notes", {
+        
+        const response = await axios.patch("http://localhost:3000/notes/" + this.$route.params.id, {
           title: this.title,
           content: this.content,
           collection: "Personal",
-          createdAt: now,
           updatedAt: now,
-          createdBy: this.$store.state.user.id,
         });
 
         const id = response.data.id;

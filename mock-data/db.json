@@ -1,64 +1,22 @@
 {
   "notes": [
     {
-      "id": "1",
-      "title": "First note",
-      "content": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio explicabo aperiam et mollitia neque eum, nostrum saepe dolores nemo ipsum.",
+      "title": "jgker",
+      "content": "erith`wiuehfsldxjvowehf",
       "collection": "Personal",
-      "createdAt": "2021-05-05T13:03:52.363Z",
-      "updatedAt": "2021-05-05T13:03:52.363Z",
-      "createdBy": "user-1"
+      "createdAt": "2021-05-11T13:30:01.435Z",
+      "updatedAt": "2021-05-11T13:30:18.506Z",
+      "createdBy": "7fdb728f-2224-4ee9-8a39-4ecc4b9c8af5",
+      "id": 3
     },
     {
-      "id": "2",
-      "title": "Second note",
-      "content": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio explicabo aperiam et mollitia neque eum, nostrum saepe dolores nemo ipsum.",
+      "title": "Second Note",
+      "content": "It is very important",
       "collection": "Personal",
-      "createdAt": "2021-05-05T13:04:24.421Z",
-      "updatedAt": "2021-05-05T13:04:24.421Z",
-      "deletedAt": "2021-05-05T13:07:38.547Z",
-      "createdBy": "user-1"
-    },
-    {
-      "id": "3",
-      "title": "Third note",
-      "content": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio explicabo aperiam et mollitia neque eum, nostrum saepe dolores nemo ipsum.",
-      "collection": "Todo",
-      "createdAt": "2021-05-05T13:06:32.240Z",
-      "updatedAt": "2021-05-05T13:06:32.240Z",
-      "createdBy": "user-1"
-    },
-    {
-      "title": "A new note",
-      "content": "This is it's content",
-      "collection": "Personal",
-      "createdAt": "2021-05-06T09:41:34.315Z",
-      "updatedAt": "2021-05-06T09:41:34.315Z",
-      "id": "C3bozQ_"
-    },
-    {
-      "title": "This is a note",
-      "content": "It's quite nice",
-      "collection": "Personal",
-      "createdAt": "2021-05-06T15:12:09.409Z",
-      "updatedAt": "2021-05-06T15:12:09.409Z",
-      "id": "OP7hJDE"
-    },
-    {
-      "title": "Yuhuuu",
-      "content": "",
-      "collection": "Personal",
-      "createdAt": "2021-05-06T15:12:56.348Z",
-      "updatedAt": "2021-05-06T15:12:56.348Z",
-      "id": "Svg2NQX"
-    },
-    {
-      "title": "Something new",
-      "content": "bla bla bla",
-      "collection": "Personal",
-      "createdAt": "2021-05-06T15:27:11.107Z",
-      "updatedAt": "2021-05-06T15:27:11.107Z",
-      "id": "8oem6sk"
+      "createdAt": "2021-05-11T13:45:36.359Z",
+      "updatedAt": "2021-05-11T13:45:36.359Z",
+      "createdBy": "7fdb728f-2224-4ee9-8a39-4ecc4b9c8af5",
+      "id": 4
     }
   ]
 }
