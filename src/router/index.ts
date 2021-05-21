@@ -40,14 +40,14 @@ const routes: Array<RouteConfig> = [
     props: true,
   },
   {
-    path: "/create-note/:id",
-    name: "EditNote",
-    component: EditNote,
-  },
-  {
-    path: "/edit-note",
+    path: "/create-note",
     name: "CreateNote",
     component: CreateNote,
+  },
+  {
+    path: "/edit-note/:id",
+    name: "EditNote",
+    component: EditNote,
   },
   
 ];

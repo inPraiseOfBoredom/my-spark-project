@@ -2,23 +2,24 @@
   <div class="p-4 pt-6">
     <form @submit.prevent="submit" class="max-w-screen-sm mx-auto">
       <div class="mb-4">
-        <label for="title" class="sr-only">Title</label>
+        
+        <label for="title" class="sr-only ">Title</label>
         <input
-          class="w-full text-xl font-medium focus:outline-none bg-transparent "
+          class="w-full text-xl font-medium focus:outline-none bg-transparent text-blue-900"
           type="text"
           name="title"
           placeholder="Take a note"
           v-model="title"
           @blur="titleTouched = true"
         />
-        <p class="text-sm text-indigo-500" v-if="titleHint">
+        <p class="text-sm text-blue-900" v-if="titleHint">
           {{ titleHint }}
         </p>
       </div>
       <div>
         <label for="content" class="sr-only">Content</label>
         <textarea
-          class="bg-transparent resize-none text-lg focus:outline-none"
+          class="bg-transparent resize-none text-lg focus:outline-none text-blue-800"
           placeholder="Content"
           rows="10"
           v-model="content"
@@ -26,7 +27,7 @@
       </div>
       <div class="mt-4">
         <button
-          class="font-medium text-indigo-500 px-8 py-1 border-2 border-indigo-400 rounded-md text-base hover:bg-indigo-50  appearance-none focus:outline-none"
+          class="font-mediumfont-medium text-blue-500 px-6 py-2 border-2 border-blue-400  text-base hover:bg-yellow-200  hover:bg-opacity-75  appearance-none focus:outline-none"
           type="submit"
         >
           Update
@@ -86,6 +87,7 @@ export default {
           content: this.content,
           collection: "Personal",
           updatedAt: now,
+          
         });
 
         const id = response.data.id;

@@ -1,7 +1,17 @@
 <template>
-  <div id="app" class="bg-gray-50 min-h-screen">
+ <div id="app" class="bg-yellow-50">
     <router-view />
   </div>
 </template>
 
-<style lang="scss"></style>
+<script lang="ts">
+import Vue from 'vue';
+
+export default Vue.extend({
+  name: 'App',
+
+  data: () => ({
+    //
+  }),
+});
+</script>

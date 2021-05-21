@@ -1,104 +1,86 @@
 <template>
-  <div class="p-4 pt-8 max-w-screen-sm mx-auto">
-    <div class="flex justify-center">
-      <router-link
-        :to="{ name: 'CreateNote' }"
-        class="font-medium text-indigo-500 px-8 py-1 border-2 border-indigo-400 rounded-md text-base hover:bg-indigo-50  appearance-none focus:outline-none"
-      >
-        Take a note
-      </router-link>
-    </div>
+  <div class="p-4 pt-12 max-w-screen-sm mx-auto ">
+      <Navigation :showDashboardButton="false"/>
 
-    <div>
-      <input type="text" v-model="keyword" placeholder="Search keyword.."
+    <div
+    class="mt-14">
+      <input type="text" name="search" v-model="keyword" placeholder="Search keyword.."
+      class="p-2 bg-yellow-50"
      
-
       />
-        <label>
-
-        </label>
-       
-
     </div>
+
     <router-link
-      class="block border-b py-4"
+      class="block border-b  border-blue-200 py-4 "
       :to="{ name: 'Note', params: { id: note.id } }"
-      v-for="note in notes"
+      v-for="note in filteredNotes"
       :key="note.id"
-      
     >
-      <div>
-        <header class="mb-2">
-          <h3 class="text-xs text-indigo-500">
+
+      <div class="hover:bg-yellow-400 hover:scale-x-150 hover:bg-opacity-20  ">
+        <header >
+          <h3 class="text-xs text-blue-800">
             {{ note.collection }}
           </h3>
-          <h2 class="text-lg font-medium">{{ note.title }}</h2>
+          <h2 class="text-lg font-semibold text-blue-900 ">{{ note.title }}</h2>
         </header>
-        <p>{{ note.content }}</p>
-        <p class="text-sm text-gray-400 mt-2 text-right">
+        <p class="text-blue-900">{{ note.content }}</p>
+        <p class="text-sm text-gray-300 mt-2 text-right">
           {{ new Date(note.createdAt).toLocaleDateString() }}
         </p>
         <button @click.prevent="deleteIt(note.id)"
-          class="font-medium text-red-600 px-4 py-1 border-2 border-red-600 rounded-md text-base hover:bg-indigo-50  appearance-none focus:outline-none ml-8"
+          class="font-medium text-red-300  text-base hover:underline appearance-none focus:outline-none"
           >
           Delete
         </button>
       </div></router-link
     >
-    <div class="flex mt-8 justify-end">
-      <button @click="logout" class="text-sm hover:text-indigo-600">
-        Logout
-      </button>
-    </div>
   </div>
 </template>
 
 <script>
 import Vue from "vue";
 import axios from "axios";
+import Navigation from '@/components/Navigation.vue';
 
 export default Vue.extend({
   name: "Dashboard",
+  components: {
+    Navigation
+  },
   data() {
     return {
       notes: [],
-      keyword: ""
+      keyword: "",
+
     };
   },
-  computed: {
-    searchKeyword() {
-      return this.notes.filter(note =>
-      {return note.content.includes(this.keyword)
-      })
-    }
-  },
+   computed: {
+     filteredNotes() {
+       return this.notes.filter(note => {
+         return ( note.content.toLowerCase().includes(this.keyword.toLowerCase()) || note.title.toLowerCase().includes(this.keyword.toLowerCase()));
+      });
+     
+     }},
 
    mounted() {
     this.getNotes()
   },
+
   methods: {
-
-  
-
     async deleteIt(id) {
 
-              const response = await axios.delete(`http://localhost:3000/notes/${id}`);
-              console.log(response);
-              this.getNotes();
-              
+      const response = await axios.delete(`http://localhost:3000/notes/${id}`);
+      console.log(response);
+      this.getNotes();
           },
     
-    logout() {
-      this.$store.commit("CLEAR");
-      this.$router.push({ name: "Login" });
-    },
-
     async getNotes() {
        
      const response = await axios.get("http://localhost:3000/notes");
-    this.notes = response.data;
+     
+     this.notes = response.data;
   },
-    
   }, 
 });
 </script>

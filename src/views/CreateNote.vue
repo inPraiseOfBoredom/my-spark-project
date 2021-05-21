@@ -1,32 +1,61 @@
 <template>
-  <div class="p-4 pt-6">
-    <form @submit.prevent="submit" class="max-w-screen-sm mx-auto">
+  <div class="p-4 pt-8  max-w-screen-sm max-h-screen">
+    <Navigation />
+   
+    <form @submit.prevent="submit" class="max-w-screen-sm mx-auto mt-16">
       <div class="mb-4">
+
+          <div id="pictureHere"
+   class="mb-4"> 
+   <img class="" :src="imageSrc"  />
+   </div>
+   <button class="text-gray-600 mb-6 border-2 p-2 border-gray-600 hover:bg-yellow-200  hover:bg-opacity-75 appearance-none focus:outline-none "
+        @click="addImage"
+        >Choose your photo of the day </button>
+   
+      <div>
         <label for="title" class="sr-only">Title</label>
+
         <input
-          class="w-full text-xl font-medium focus:outline-none bg-transparent "
+          class="w-full text-xl font-medium focus:outline-none bg-transparent border-b  border-blue-200 "
           type="text"
           name="title"
-          placeholder="Take a note"
+          placeholder="Title"
           v-model="title"
           @blur="titleTouched = true"
         />
-        <p class="text-sm text-indigo-500" v-if="titleHint">
+        <p class="text-sm text-red-400" v-if="titleHint">
           {{ titleHint }}
         </p>
       </div>
       <div>
         <label for="content" class="sr-only">Content</label>
         <textarea
-          class="bg-transparent resize-none text-lg focus:outline-none"
+          class="bg-transparent resize-none text-lg focus:outline-none 
+          "
           placeholder="Content"
-          rows="10"
+       
           v-model="content"
         />
       </div>
+      
+     
+     
+        
+      </div>
+
+      <select v-model="selectedCollection" class="bg-yellow-50 focus:outline-none">
+         <option value="Job">Job</option>
+         <option value="Todo">Todo</option>
+           <option value="Tracker">Tracker</option>
+         <option value="Personal">Personal</option> </select>
+          
+           <Tracker v-if="selectedCollection === 'Tracker'" />
+
+
       <div class="mt-4">
         <button
-          class="font-medium text-indigo-500 px-8 py-1 border-2 border-indigo-400 rounded-md text-base hover:bg-indigo-50  appearance-none focus:outline-none"
+          class="font-medium text-red-300 px-8 py-1 border-2 border-red-300  text-base hover:bg-yellow-200  hover:bg-opacity-75 appearance-none focus:outline-none"
           type="submit"
         >
           Create
@@ -35,22 +64,35 @@
       <p v-if="submitError" class="mt-1 text-xs text-red-600">
         {{ submitError }}
       </p>
+
+      
+     
     </form>
-  </div>
+  </div> 
 </template>
 
 <script>
+
 import axios from "axios";
+import Navigation from '@/components/Navigation.vue';
+import Tracker from '@/components/Tracker.vue';
+
 
 export default {
+  components: {
+  Navigation,
+  Tracker },
+
   data() {
     return {
       title: "",
       titleTouched: false,
       content: "",
       submitError: "",
-    };
-  },
+      selectedCollection: "Personal",
+      imageSrc: ""
+      
+  }},
    
   computed: {
     titleHint() {
@@ -68,22 +110,39 @@ export default {
     clearErrors() {
       this.submitError = "";
     },
+
+    async addImage() {
+
+    const res = await axios.get("https://api.unsplash.com/photos/random", {
+    headers: {
+      'Authorization': 'Client-ID zqwYLE9TnTNR-G8tzu7dwxXBnPVvCjqrOHjCOxQBv0Q'}
+    });
+    
+    
+     this.imageSrc = `${res.data.urls.small}`;
+     
+
+    },
+
    
     async submit() {
+        
       this.clearErrors();
-
       if (!this.validate()) return;
       try {
+        console.log(this.imageSrc);
         const now = new Date();
         const response = await axios.post("http://localhost:3000/notes", {
           title: this.title,
           content: this.content,
-          collection: "Personal",
+          collection: this.selectedCollection,
           createdAt: now,
           updatedAt: now,
           createdBy: this.$store.state.user.id,
+          imageSrc: this.imageSrc
+          
         });
-
+        
         const id = response.data.id;
         this.$router.push("/notes/" + id);
       } catch (error) {

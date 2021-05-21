@@ -1,53 +1,123 @@
 <template>
   <div class="py-6 px-4 max-w-screen-sm mx-auto">
-    <header class="mb-4">
-      <h2 class="text-indigo-500 text-lg">{{ note.collection }}</h2>
-      <h1 class="text-4xl font-medium">{{ note.title }}</h1>
+    <Navigation />
+    <!-- Background-->
+
+    <div
+      @click="showConfirmation = false"
+      class="w-screen h-screen grid place-items-center fixed bg-black bg-opacity-20 inset-0"
+      v-if="showConfirmation"
+    >
+      <div @click.stop="" class="p-8 z-10 rounded shadow-xl bg-gray-50">
+        <h2 class="text-lg font-medium mb-4">
+          Are you sure?
+        </h2>
+        <div class="flex space-x-2 ">
+          <button
+            class="px-4 py-1 border-2 rounded-md border-green-300 text-green-300 font-medium uppercase text-sm hover:bg-green-100 
+      hover:scale-105 transform transition-transform duration-200"
+            @click="deleteIt"
+          >
+            Yes
+          </button>
+
+          <button
+            class="px-5 py-1 border-2 rounded-md border-red-300 text-red-300 font-medium uppercase text-sm hover:bg-red-100 
+      hover:scale-105 transform transition-transform duration-200"
+            @click="showConfirmation = false"
+          >
+            No
+          </button>
+        </div>
+      </div>
+    </div>
+    <header class="mb-4 mt-20">
+      <h2 class="text-lg  ">{{ note.collection }}</h2>
+
+      <img class="" :src="note.imageSrc" @click="changeIt()" />
+
+      <h1
+        class="text-4xl  font-semibold text-blue-900 pb-1 border-b  border-blue-200 "
+      >
+        {{ note.title }}
+      </h1>
     </header>
-    <p class="leading-relaxed text-lg">{{ note.content }}</p>
+    <p class="leading-relaxed text-blue-800 text-lg">{{ note.content }}</p>
     <div class="text-sm text-right text-gray-400 mt-4">
       {{ new Date(note.createdAt).toLocaleDateString() }}
     </div>
 
-     <router-link
-          class="font-medium text-indigo-500 px-8 py-1 border-2 border-indigo-400 rounded-md text-base hover:bg-indigo-50  appearance-none focus:outline-none"
-          :to="{ 
-            name: 'EditNote', 
-            params: { 
-              
-            id: $route.params.id}
-          }
+    <router-link
+      class="font-medium text-blue-400 px-6 py-2 border-2 border-blue-400  text-base hover:bg-yellow-200  hover:bg-opacity-75  appearance-none focus:outline-none"
+      :to="{
+        name: 'EditNote',
+        params: {
+          id: $route.params.id,
+        },
+      }"
+    >
+      Edit
+    </router-link>
 
-          " 
-        >
-          Edit
-        </router-link>
-
-         <button @click="deleteIt"
-          class="font-medium text-red-600 px-8 py-1 border-2 border-red-600 rounded-md text-base hover:bg-indigo-50  appearance-none focus:outline-none ml-8"
-          >
-          Delete
-        </button>
+    <button
+      @click="showConfirmation = true"
+      class="font-medium text-red-300 px-4 py-1 border-2 border-red-300 text-base hover:bg-yellow-200 hover:bg-opacity-75  appearance-none focus:outline-none ml-4"
+    >
+      Delete
+    </button>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import axios from "axios";
+import Navigation from "@/components/Navigation.vue";
 
 export default Vue.extend({
+  components: {
+    Navigation,
+  },
   data() {
     return {
       note: {},
+      showConfirmation: false,
+      imageSrc: "",
     };
   },
   methods: {
     async deleteIt() {
-          const id = this.$route.params.id;
-              const response = await axios.delete("http://localhost:3000/notes/" + id)
-              console.log(response);
-                this.$router.push({ name: "Dashboard" });
-          }
+      const id = this.$route.params.id;
+      const response = await axios.delete("http://localhost:3000/notes/" + id);
+      console.log(response);
+      this.$router.push({ name: "Dashboard" });
+    },
+
+    async getNewImage() {
+      const res = await axios.get("https://api.unsplash.com/photos/random", {
+        headers: {
+          Authorization:
+            "Client-ID zqwYLE9TnTNR-G8tzu7dwxXBnPVvCjqrOHjCOxQBv0Q",
+        },
+      });
+      this.imageSrc = `${res.data.urls.small}`;
+    },
+    async updateNewImage() {
+      console.log(this.imageSrc);
+      // eslint-disable-next-line no-unused-vars
+      const response = await axios.patch(
+        "http://localhost:3000/notes/" + this.$route.params.id,
+        {
+          imageSrc: this.imageSrc,
+        }
+      );
+        this.note = response.data;
+
+    },
+
+    async changeIt() {
+      await this.getNewImage();
+      this.updateNewImage();
+    },
   },
   async mounted() {
     const id = this.$route.params.id;
