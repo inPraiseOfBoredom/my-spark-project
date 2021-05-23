@@ -1,7 +1,10 @@
 <template>
- <div id="app" class="bg-yellow-50">
-    <router-view />
-  </div>
+ <div class="bg-yellow-100 min-h-screen">
+        
+
+   
+      <router-view/></div>
+  
 </template>
 
 <script lang="ts">

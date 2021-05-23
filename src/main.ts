@@ -4,7 +4,7 @@ import router from "./router";
 import store from "./store";
 
 import "./index.css";
-import vuetify from './plugins/vuetify'
+
 
 Vue.config.productionTip = false;
 
@@ -12,6 +12,6 @@ console.log(process.env);
 new Vue({
   router,
   store,
-  vuetify,
+ 
   render: (h) => h(App)
 }).$mount("#app");
